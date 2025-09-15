@@ -1,0 +1,97 @@
+:host {
+  --button-size: 60px; // ボタンの基本サイズ
+  --button-color: #34495e;
+  --button-active-color: #4a627a;
+}
+
+.controls-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  user-select: none; // ボタンのテキストを選択できないようにする
+}
+
+.control-btn {
+  background-color: var(--button-color);
+  color: white;
+  border: 2px solid #2c3e50;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &:active {
+    background-color: var(--button-active-color);
+  }
+
+  span {
+    font-size: 0.7rem;
+  }
+}
+
+// 十字キーのレイアウト
+.d-pad {
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left . right"
+    ". down .";
+  gap: 5px;
+  width: calc(var(--button-size) * 3 + 10px);
+  height: calc(var(--button-size) * 3 + 10px);
+
+  .up {
+    grid-area: up;
+  }
+
+  .down {
+    grid-area: down;
+  }
+
+  .left {
+    grid-area: left;
+  }
+
+  .right {
+    grid-area: right;
+  }
+
+  .up,
+  .down,
+  .left,
+  .right {
+    width: var(--button-size);
+    height: var(--button-size);
+  }
+}
+
+// アクションボタンのレイアウト
+.action-pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  .actions-top,
+  .actions-bottom {
+    display: flex;
+    gap: 10px;
+  }
+
+  .hold {
+    width: calc(var(--button-size) * 2 + 10px);
+    height: var(--button-size);
+  }
+
+  .rotate-left,
+  .rotate-right {
+    width: var(--button-size);
+    height: var(--button-size);
+    border-radius: 50%; // 回転ボタンは丸くする
+  }
+}

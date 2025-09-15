@@ -1,11 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { GameBoardComponent } from './feature/game-board/game-board';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  standalone: true,
+  imports: [GameBoardComponent], // 作成したGameBoardComponentを読み込む
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss'],
 })
 export class App {
-  protected readonly title = signal('tetris-typed-game');
+  title = 'tetris-typed-game';
 }

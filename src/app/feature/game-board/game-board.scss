@@ -1,0 +1,147 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.score {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.game-board {
+  display: grid;
+  --board-width: 10;
+  --cell-size: 3vmin;
+  grid-template-columns: repeat(var(--board-width), var(--cell-size));
+  background-color: #2c3e50;
+  border: 4px solid #34495e;
+}
+
+.row {
+  display: contents;
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: #34495e;
+  box-shadow: inset 0 0 0 1px #2c3e50;
+}
+
+.piece-1 {
+  background-color: #3498db;
+}
+
+.piece-2 {
+  background-color: #e67e22;
+}
+
+.piece-3 {
+  background-color: #2980b9;
+}
+
+.piece-4 {
+  background-color: #f1c40f;
+}
+
+.piece-5 {
+  background-color: #2ecc71;
+}
+
+.piece-6 {
+  background-color: #9b59b6;
+}
+
+.piece-7 {
+  background-color: #e74c3c;
+}
+
+// ★★★ ここから下を追加 ★★★
+.board-container {
+  position: relative; // オーバーレイの基準位置にする
+}
+
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); // 半透明の黒
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 100;
+}
+
+.game-over-message {
+  text-align: center;
+
+  h2 {
+    font-size: 3rem;
+    margin: 0;
+    color: #e74c3c;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  button {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #2980b9;
+    }
+  }
+}
+
+.game-container {
+  display: flex;
+  align-items: flex-start; // 上揃え
+  gap: 2rem; // 要素間のスペース
+}
+
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center; // 中央寄せに変更
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+// ★ info-panel を左右に分ける
+.info-panel-left,
+.info-panel-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 12vmin; // パネルの幅を固定
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column; // 全体を縦並びにする
+  align-items: center;
+  width: 100%;
+}
+
+.controls-area {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 500px; // スマホ幅を想定
+}

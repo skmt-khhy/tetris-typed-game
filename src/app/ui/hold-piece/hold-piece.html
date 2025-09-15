@@ -1,0 +1,8 @@
+<div class="hold-piece-container">
+  <h4>HOLD</h4>
+  <div class="hold-piece-board">
+    <div *ngFor="let row of pieceMatrix" class="row">
+      <div *ngFor="let cell of row" class="cell piece-{{ cell }}"></div>
+    </div>
+  </div>
+</div>

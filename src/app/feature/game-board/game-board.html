@@ -1,0 +1,30 @@
+<div class="layout-container">
+  <div class="game-container">
+    <div class="info-panel-left">
+      <app-hold-piece></app-hold-piece>
+    </div>
+
+    <div class="board-container">
+      <div class="game-board" *ngIf="gameService.board$ | async as board">
+        <div *ngFor="let row of board" class="row">
+          <div *ngFor="let cell of row" class="cell piece-{{ cell }}"></div>
+        </div>
+      </div>
+
+      <div class="game-over-overlay" *ngIf="gameService.isGameOver$ | async">
+        <div class="game-over-message">
+          <h2>GAME OVER</h2>
+          <button (click)="gameService.start()">RESTART</button>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel-right">
+      <div class="score">SCORE: {{ gameService.score$ | async }}</div>
+      <app-next-piece></app-next-piece>
+    </div>
+  </div>
+
+  <div class="controls-area">
+    <app-game-controls></app-game-controls>
+  </div>
+</div>

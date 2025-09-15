@@ -1,0 +1,30 @@
+<div class="controls-container">
+  <div class="d-pad">
+    <button class="control-btn up" (click)="gameService.hardDrop()">↑</button>
+
+    <button class="control-btn left" (mousedown)="startMove('left')" (mouseup)="stopMove()" (mouseleave)="stopMove()"
+      (touchstart)="startMove('left')" (touchend)="stopMove()">←</button>
+
+    <button class="control-btn down" (mousedown)="startMove('down')" (mouseup)="stopMove()" (mouseleave)="stopMove()"
+      (touchstart)="startMove('down')" (touchend)="stopMove()">↓</button>
+
+    <button class="control-btn right" (mousedown)="startMove('right')" (mouseup)="stopMove()" (mouseleave)="stopMove()"
+      (touchstart)="startMove('right')" (touchend)="stopMove()">→</button>
+  </div>
+
+  <div class="action-pad">
+    <div class="actions-top">
+      <button class="control-btn hold" (click)="gameService.hold()">
+        HOLD<span>(space)</span>
+      </button>
+    </div>
+    <div class="actions-bottom">
+      <button class="control-btn rotate-left" (click)="gameService.rotateCounterClockwise()">
+        Z<span>(左回転)</span>
+      </button>
+      <button class="control-btn rotate-right" (click)="gameService.rotate()">
+        X<span>(右回転)</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="next-piece-container">
+  <h4>NEXT</h4>
+  <div *ngFor="let pieceId of nextPieces" class="next-piece-board">
+    <div *ngFor="let row of getPieceMatrix(pieceId)" class="row">
+      <div *ngFor="let cell of row" class="cell piece-{{ cell }}"></div>
+    </div>
+  </div>
+</div>
