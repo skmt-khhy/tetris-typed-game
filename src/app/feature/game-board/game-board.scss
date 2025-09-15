@@ -11,6 +11,18 @@
   margin-bottom: 1rem;
 }
 
+// ★★★ レベル表示用のスタイルを追加 ★★★
+.level {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+// ★★★ プレイ時間表示用のスタイルを追加 ★★★
+.play-time {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 .game-board {
   display: grid;
   --board-width: 10;

@@ -18,8 +18,13 @@
         </div>
       </div>
     </div>
+
     <div class="info-panel-right">
       <div class="score">SCORE: {{ gameService.score$ | async }}</div>
+      <div class="level">LEVEL: {{ gameService.level$ | async }}</div>
+      <div class="play-time">
+        TIME: {{ gameService.elapsedTime$ | async }}
+      </div>
       <app-next-piece></app-next-piece>
     </div>
   </div>
