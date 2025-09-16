@@ -1,34 +1,20 @@
-# Netlifyのビルド設定
+# サイト本体のビルド設定
 [build]
-  # Angularプロジェクトをビルドするためのコマンド
   command = "ng build"
-
-  # ビルド後に公開するフォルダのパス
-  # プロジェクト名が "tetris-typed-game" の場合、このパスになります
   publish = "dist/tetris-typed-game/browser"
 
-  # Netlify Functions (サーバーレス関数) が置かれているフォルダ
-  functions = "netlify/functions"
+# Functions (APIサーバー) の設定
+[functions]
+  # APIのコードが置かれているディレクトリ
+  directory = "netlify/functions"
 
-# リダイレクト設定
+# リダイレクト設定 (変更なし)
 [[redirects]]
-  # /api/ で始まるURLへのアクセスを...
   from = "/api/*"
-  # ...サーバーレス関数 "api" に転送する
   to = "/.netlify/functions/api/:splat"
-  status = 200 # これは書き換えなので200 OK
-
-[[redirects]]
-  # 上記のルールに当てはまらない全てのアクセスを...
-  from = "/*"
-  # ...index.html に転送する (Angularのルーティングを機能させるため)
-  to = "/index.html"
   status = 200
 
-# ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-# ★ このブロックをファイルの一番下に追加します ★
-[[plugins]]
-  # Angularの自動ランタイムプラグインを無効化する
-  package = "@netlify/angular-runtime"
-  disabled = true
-# ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
