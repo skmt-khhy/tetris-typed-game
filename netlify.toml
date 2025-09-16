@@ -27,7 +27,7 @@
 
 # ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 # ★ このブロックをファイルの一番下に追加します ★
-[plugins]
+[[plugins]]
   # Angularの自動ランタイムプラグインを無効化する
   package = "@netlify/angular-runtime"
   disabled = true
