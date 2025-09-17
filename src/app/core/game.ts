@@ -8,6 +8,8 @@ export const BOARD_HEIGHT = 20;
 const INITIAL_FALL_SPEED = 1000;
 const MIN_FALL_SPEED = 100;
 const SPEED_INCREMENT = 50;
+const HOLD_DELAY = 350; // ★ 300 から 350 に変更。これが最終調整です。
+const REPEAT_INTERVAL = 120; // ★ 連続移動の速度 (ミリ秒)
 
 // Pieceインターフェース
 interface Piece {
@@ -41,6 +43,8 @@ export class GameService {
   private continuousMoveInterval: any;
   // ★★★ 時間計測用のタイマーIDを追加 ★★★
   private timeInterval: any;
+  // ★ 長押し判定用のタイマーIDをサービスに移動
+  private holdTimeout: any;
 
   constructor() { }
 
@@ -100,27 +104,6 @@ export class GameService {
     }
   }
 
-  /**
-   * ★★★ 修正されたメソッド ★★★
-   * 現在のスコアに基づいてレベルと落下速度を計算する
-   */
-  private updateLevelAndSpeed() {
-    // ★★★ 1000点ごとから「500点」ごとにレベルアップするように変更 ★★★
-    const newLevel = Math.floor(this.score$.getValue() / 500);
-
-    if (newLevel > this.level$.getValue()) {
-      this.level$.next(newLevel);
-      console.log(`Level Up! Level: ${newLevel}`);
-
-      const newSpeed = Math.max(MIN_FALL_SPEED, INITIAL_FALL_SPEED - (newLevel * SPEED_INCREMENT));
-
-      if (newSpeed !== this.fallSpeed) {
-        this.fallSpeed = newSpeed;
-        this.resetGameInterval();
-      }
-    }
-  }
-
   // ... (その他のメソッドは変更なしです)
   hold() { if (this.isGameOver$.getValue() || !this.canHold) { return; } if (this.holdPieceId === 0) { this.holdPieceId = this.piece.typeId; this.spawnPiece(); } else { const previouslyHeldId = this.holdPieceId; this.holdPieceId = this.piece.typeId; this.spawnPiece(previouslyHeldId); } this.canHold = false; this.holdPiece$.next(this.holdPieceId); this.updateBoard(); }
   private gameLoop() { if (this.isGameOver$.getValue()) { clearInterval(this.gameInterval); return; } this.softDrop(); }
@@ -130,8 +113,60 @@ export class GameService {
   rotateCounterClockwise(): void { if (this.isGameOver$.getValue()) return; const rotatedShape = this.rotateMatrixCounterClockwise(this.piece.shape); if (this.isValidPosition(this.piece.x, this.piece.y, rotatedShape)) { this.piece.shape = rotatedShape; this.updateBoard(); } }
   softDrop(): void { if (this.isGameOver$.getValue()) return; const nextY = this.piece.y + 1; if (this.isValidPosition(this.piece.x, nextY, this.piece.shape)) { this.piece.y = nextY; } else { this.lockPiece(); this.spawnPiece(); } this.updateBoard(); }
   hardDrop(): void { if (this.isGameOver$.getValue()) return; while (this.isValidPosition(this.piece.x, this.piece.y + 1, this.piece.shape)) { this.piece.y++; } this.lockPiece(); this.spawnPiece(); this.updateBoard(); }
-  startContinuousMove(direction: 'left' | 'right' | 'down'): void { if (this.isGameOver$.getValue()) return; switch (direction) { case 'left': this.moveLeft(); break; case 'right': this.moveRight(); break; case 'down': this.softDrop(); break; } this.stopContinuousMove(); this.continuousMoveInterval = setInterval(() => { switch (direction) { case 'left': this.moveLeft(); break; case 'right': this.moveRight(); break; case 'down': this.softDrop(); break; } }, 100); }
+  /**
+    * ★★★ 修正されたメソッド ★★★
+    * 連続移動の開始（最初の即時実行を削除）
+    */
+  startContinuousMove(direction: 'left' | 'right' | 'down'): void {
+    if (this.isGameOver$.getValue()) return;
+
+    // 既存のタイマーをクリア
+    this.stopContinuousMove();
+
+    // 100ミリ秒ごとに操作を繰り返すタイマーを設定
+    this.continuousMoveInterval = setInterval(() => {
+      switch (direction) {
+        case 'left': this.moveLeft(); break;
+        case 'right': this.moveRight(); break;
+        case 'down': this.softDrop(); break;
+      }
+    }, 100);
+  }
   stopContinuousMove(): void { clearInterval(this.continuousMoveInterval); }
+
+  // ★★★ 新しいメソッド：ボタンが押された時の処理 ★★★
+  startMove(direction: 'left' | 'right' | 'down'): void {
+    if (this.isGameOver$.getValue()) return;
+
+    // 既存のタイマーをすべてクリア
+    this.stopMove();
+
+    // 1. まず1回だけ即座に実行する（タップのレスポンス）
+    switch (direction) {
+      case 'left': this.moveLeft(); break;
+      case 'right': this.moveRight(); break;
+      case 'down': this.softDrop(); break;
+    }
+
+    // 2. 一定時間後に連続移動を開始するタイマーをセット
+    this.holdTimeout = setTimeout(() => {
+      this.continuousMoveInterval = setInterval(() => {
+        switch (direction) {
+          case 'left': this.moveLeft(); break;
+          case 'right': this.moveRight(); break;
+          case 'down': this.softDrop(); break;
+        }
+      }, REPEAT_INTERVAL);
+    }, HOLD_DELAY);
+  }
+
+  // ★★★ 新しいメソッド：ボタンが離された時の処理 ★★★
+  stopMove(): void {
+    clearTimeout(this.holdTimeout);
+    clearInterval(this.continuousMoveInterval);
+  }
+
+
   private spawnPiece(specificTypeId?: number) {
     let typeId: number; if (specificTypeId) { typeId = specificTypeId; } else { this.ensureQueueIsFull(); typeId = this.pieceQueue.shift()!; this.nextPieces$.next(this.pieceQueue.slice(0, 4)); } const shape = SHAPES[typeId].shape; this.piece = { x: Math.floor(BOARD_WIDTH / 2) - 2, y: 0, shape: shape, typeId: typeId, }; if (!this.isValidPosition(this.piece.x, this.piece.y, this.piece.shape)) {
       this.isGameOver$.next(true);

@@ -2,8 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { GameService } from '../../core/game';
 import { CommonModule } from '@angular/common';
 import { NextPieceComponent } from '../../ui/next-piece/next-piece';
-import { HoldPieceComponent } from '../../ui/hold-piece/hold-piece'; // ★ HoldPieceをインポート
-import { GameControlsComponent } from '../../ui/game-controls/game-controls'; // ★ GameControlsをインポート
+import { HoldPieceComponent } from '../../ui/hold-piece/hold-piece';
+import { GameControlsComponent } from '../../ui/game-controls/game-controls';
 
 @Component({
   selector: 'app-game-board',
@@ -20,27 +20,36 @@ export class GameBoardComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyboardInput(event: KeyboardEvent) {
-    event.preventDefault();
-    // キー入力を小文字に変換して、'x'と'X'の両方に対応
-    switch (event.key.toLowerCase()) {
-      // --- 左右移動とソフトドロップ（変更なし） ---
-      case 'arrowleft': this.gameService.moveLeft(); break;
-      case 'arrowright': this.gameService.moveRight(); break;
-      case 'arrowdown': this.gameService.softDrop(); break;
+    // ★★★ event.preventDefault() をここから削除 ★★★
 
-      // ★★★ ここからが変更箇所 ★★★
-      case 'arrowup': // ↑キー
-        this.gameService.hardDrop(); // ハードドロップを実行
+    switch (event.key.toLowerCase()) {
+      case 'arrowleft':
+        this.gameService.moveLeft();
+        event.preventDefault(); // ★ ゲームで使うキーの場合にのみ呼び出す
         break;
-      case 'x': // xキー
-        this.gameService.rotate(); // 右回転を実行
+      case 'arrowright':
+        this.gameService.moveRight();
+        event.preventDefault(); // ★
         break;
-      case 'z': // zキー
-        this.gameService.rotateCounterClockwise(); // 左回転を実行
+      case 'arrowdown':
+        this.gameService.softDrop();
+        event.preventDefault(); // ★
         break;
-      // ★★★ ここまでが変更箇所 ★★★
+      case 'arrowup':
+        this.gameService.hardDrop();
+        event.preventDefault(); // ★
+        break;
+      case 'x':
+        this.gameService.rotate();
+        event.preventDefault(); // ★
+        break;
+      case 'z':
+        this.gameService.rotateCounterClockwise();
+        event.preventDefault(); // ★
+        break;
       case ' ':
         this.gameService.hold();
+        event.preventDefault(); // ★
         break;
     }
   }

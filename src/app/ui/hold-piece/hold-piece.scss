@@ -35,7 +35,7 @@
 
 // --- ここから下はHoldPiece固有のスタイル ---
 .hold-piece-container {
-  padding: 1rem;
+  padding: 0.2rem;
   background-color: #2c3e50;
   border-radius: 5px;
   text-align: center;
@@ -49,7 +49,7 @@ h4 {
 
 .hold-piece-board {
   display: grid;
-  --cell-size: 2vmin;
+  --cell-size: 2.8vmin;
   grid-template-columns: repeat(4, var(--cell-size));
 }
 

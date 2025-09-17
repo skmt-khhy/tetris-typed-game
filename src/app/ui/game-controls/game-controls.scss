@@ -1,5 +1,5 @@
 :host {
-  --button-size: 60px; // ボタンの基本サイズ
+  --button-size: 60px;
   --button-color: #34495e;
   --button-active-color: #4a627a;
 }
@@ -10,7 +10,7 @@
   align-items: center;
   width: 100%;
   padding: 1rem;
-  user-select: none; // ボタンのテキストを選択できないようにする
+  user-select: none;
 }
 
 .control-btn {
@@ -24,6 +24,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  // ★ ボタンのサイズを固定
+  width: var(--button-size);
+  height: var(--button-size);
 
   &:active {
     background-color: var(--button-active-color);
@@ -34,43 +37,23 @@
   }
 }
 
-// 十字キーのレイアウト
+/* ★★★ 十字キーのレイアウトをFlexboxで再定義 ★★★ */
 .d-pad {
-  display: grid;
-  grid-template-areas:
-    ". up ."
-    "left . right"
-    ". down .";
+  display: flex;
+  align-items: center; // 左右のボタンを上下中央に配置
   gap: 5px;
-  width: calc(var(--button-size) * 3 + 10px);
-  height: calc(var(--button-size) * 3 + 10px);
-
-  .up {
-    grid-area: up;
-  }
-
-  .down {
-    grid-area: down;
-  }
-
-  .left {
-    grid-area: left;
-  }
-
-  .right {
-    grid-area: right;
-  }
-
-  .up,
-  .down,
-  .left,
-  .right {
-    width: var(--button-size);
-    height: var(--button-size);
-  }
 }
 
-// アクションボタンのレイアウト
+.d-pad-col {
+  display: flex;
+  flex-direction: column; // 中央の列はボタンを縦に並べる
+  gap: 5px;
+}
+
+/* ★★★ ここまでが修正箇所 ★★★ */
+
+
+// アクションボタンのレイアウト (変更なし)
 .action-pad {
   display: flex;
   flex-direction: column;
@@ -92,6 +75,6 @@
   .rotate-right {
     width: var(--button-size);
     height: var(--button-size);
-    border-radius: 50%; // 回転ボタンは丸くする
+    border-radius: 50%;
   }
 }

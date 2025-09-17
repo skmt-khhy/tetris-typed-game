@@ -1,15 +1,21 @@
 <div class="controls-container">
   <div class="d-pad">
-    <button class="control-btn up" (click)="gameService.hardDrop()">↑</button>
-
-    <button class="control-btn left" (mousedown)="startMove('left')" (mouseup)="stopMove()" (mouseleave)="stopMove()"
-      (touchstart)="startMove('left')" (touchend)="stopMove()">←</button>
-
-    <button class="control-btn down" (mousedown)="startMove('down')" (mouseup)="stopMove()" (mouseleave)="stopMove()"
-      (touchstart)="startMove('down')" (touchend)="stopMove()">↓</button>
-
-    <button class="control-btn right" (mousedown)="startMove('right')" (mouseup)="stopMove()" (mouseleave)="stopMove()"
-      (touchstart)="startMove('right')" (touchend)="stopMove()">→</button>
+    <div class="d-pad-col">
+      <button class="control-btn left" (mousedown)="handlePress('left', $event)" (mouseup)="handleRelease()"
+        (mouseleave)="handleRelease()" (touchstart)="handlePress('left', $event)"
+        (touchend)="handleRelease()">←</button>
+    </div>
+    <div class="d-pad-col">
+      <button class="control-btn up" (click)="gameService.hardDrop()">↑</button>
+      <button class="control-btn down" (mousedown)="handlePress('down', $event)" (mouseup)="handleRelease()"
+        (mouseleave)="handleRelease()" (touchstart)="handlePress('down', $event)"
+        (touchend)="handleRelease()">↓</button>
+    </div>
+    <div class="d-pad-col">
+      <button class="control-btn right" (mousedown)="handlePress('right', $event)" (mouseup)="handleRelease()"
+        (mouseleave)="handleRelease()" (touchstart)="handlePress('right', $event)"
+        (touchend)="handleRelease()">→</button>
+    </div>
   </div>
 
   <div class="action-pad">

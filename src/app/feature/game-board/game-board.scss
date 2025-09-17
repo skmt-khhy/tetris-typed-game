@@ -1,37 +1,78 @@
 :host {
   display: flex;
+  justify-content: center;
+  padding: 1rem;
+  font-family: sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// --- 全体のコンテナ ---
+.layout-container {
+  display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  font-family: sans-serif;
+  width: 100%;
+  gap: 1rem; // 各セクション（上段・中段・下段）の間の垂直方向の余白
 }
 
-.score {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+// --- 上段: スコア表示エリア ---
+.top-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0.5rem 0;
 }
 
-// ★★★ レベル表示用のスタイルを追加 ★★★
-.level {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-// ★★★ プレイ時間表示用のスタイルを追加 ★★★
+.score,
+.level,
 .play-time {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 2.5vmin; // 画面サイズに応じて文字もスケール
+  font-weight: bold;
+  white-space: nowrap;
 }
 
+// --- 中段: ゲームエリア (HOLD, ボード, NEXT) ---
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; // HOLDとNEXTをゲームボードの下端に揃える
+  gap: 2vmin;
+  width: 100%;
+  flex-wrap: nowrap; // ★【最重要】絶対に折り返さないように指定
+}
+
+.info-panel-left,
+.info-panel-right {
+  width: 12vmin;
+  min-width: 90px;
+  flex-shrink: 0; // 横幅が縮まないように
+}
+
+.board-container {
+  flex-shrink: 0; // ゲームボードが縮まないように
+}
+
+// --- 下段: 操作ボタン ---
+.controls-area {
+  width: 100%;
+  max-width: 500px;
+}
+
+// --- ゲームボードとセル ---
 .game-board {
   display: grid;
   --board-width: 10;
-  --cell-size: 3vmin;
+  --cell-size: 5.5vmin; // ゲーム領域の大きさを決める基準値
   grid-template-columns: repeat(var(--board-width), var(--cell-size));
   background-color: #2c3e50;
   border: 4px solid #34495e;
 }
 
+// --- (これ以降の基本スタイルは変更なし) ---
 .row {
   display: contents;
 }
@@ -71,9 +112,8 @@
   background-color: #e74c3c;
 }
 
-// ★★★ ここから下を追加 ★★★
 .board-container {
-  position: relative; // オーバーレイの基準位置にする
+  position: relative;
 }
 
 .game-over-overlay {
@@ -82,7 +122,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); // 半透明の黒
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -115,45 +155,4 @@
       background-color: #2980b9;
     }
   }
-}
-
-.game-container {
-  display: flex;
-  align-items: flex-start; // 上揃え
-  gap: 2rem; // 要素間のスペース
-}
-
-.info-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.game-container {
-  display: flex;
-  justify-content: center; // 中央寄せに変更
-  align-items: flex-start;
-  gap: 2rem;
-}
-
-// ★ info-panel を左右に分ける
-.info-panel-left,
-.info-panel-right {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 12vmin; // パネルの幅を固定
-}
-
-.layout-container {
-  display: flex;
-  flex-direction: column; // 全体を縦並びにする
-  align-items: center;
-  width: 100%;
-}
-
-.controls-area {
-  margin-top: 2rem;
-  width: 100%;
-  max-width: 500px; // スマホ幅を想定
 }

@@ -12,13 +12,18 @@ import { GameService } from '../../core/game';
 export class GameControlsComponent {
   constructor(public gameService: GameService) { }
 
-  // ★★★ 連続操作を開始するメソッド ★★★
-  startMove(direction: 'left' | 'right' | 'down') {
-    this.gameService.startContinuousMove(direction);
+  /**
+   * ★★★ 修正されたメソッド ★★★
+   * イベントオブジェクトを受け取り、preventDefault()を呼び出す
+   */
+  handlePress(direction: 'left' | 'right' | 'down', event: Event): void {
+    // この一行が最重要。タッチイベントの後の重複マウスイベントを防ぐ
+    event.preventDefault();
+
+    this.gameService.startMove(direction);
   }
 
-  // ★★★ 連続操作を停止するメソッド ★★★
-  stopMove() {
-    this.gameService.stopContinuousMove();
+  handleRelease(): void {
+    this.gameService.stopMove();
   }
 }

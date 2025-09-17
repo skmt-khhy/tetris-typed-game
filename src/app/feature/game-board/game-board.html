@@ -1,4 +1,10 @@
 <div class="layout-container">
+  <div class="top-stats">
+    <div class="score">SCORE: {{ gameService.score$ | async }}</div>
+    <div class="level">LEVEL: {{ gameService.level$ | async }}</div>
+    <div class="play-time">TIME: {{ gameService.elapsedTime$ | async }}</div>
+  </div>
+
   <div class="game-container">
     <div class="info-panel-left">
       <app-hold-piece></app-hold-piece>
@@ -10,7 +16,6 @@
           <div *ngFor="let cell of row" class="cell piece-{{ cell }}"></div>
         </div>
       </div>
-
       <div class="game-over-overlay" *ngIf="gameService.isGameOver$ | async">
         <div class="game-over-message">
           <h2>GAME OVER</h2>
@@ -20,11 +25,6 @@
     </div>
 
     <div class="info-panel-right">
-      <div class="score">SCORE: {{ gameService.score$ | async }}</div>
-      <div class="level">LEVEL: {{ gameService.level$ | async }}</div>
-      <div class="play-time">
-        TIME: {{ gameService.elapsedTime$ | async }}
-      </div>
       <app-next-piece></app-next-piece>
     </div>
   </div>
