@@ -30,7 +30,12 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy { //
   private subscription!: Subscription;
 
   // 定数
-  private readonly CELL_SIZE = 20; // 1セルのピクセルサイズ
+
+  // ★ CELL_SIZE を 20 にした変更を維持
+  private readonly CELL_SIZE = 20;
+
+  // ★★★ アニメーション用の色をCOLORS配列に追加 ★★★
+  // ★★★ ゴーストピース用の色をCOLORS配列に追加 ★★★
   private readonly COLORS = [
     '#34495e', // 0: Empty
     '#3498db', // 1: I
@@ -40,6 +45,9 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy { //
     '#2ecc71', // 5: S
     '#9b59b6', // 6: T
     '#e74c3c', // 7: Z
+    // 8番目はアニメーションで使ったので空けておく
+    '#ffffff', // 8: (未使用)
+    'rgba(255, 255, 255, 0.3)', // 9: Ghost Piece
   ];
 
   constructor(public gameService: GameService) { }

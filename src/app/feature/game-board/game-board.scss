@@ -50,6 +50,8 @@
   width: 12vmin;
   min-width: 90px;
   flex-shrink: 0; // 横幅が縮まないように
+  max-height: 400px; // ★ ゲームボードの高さ(20セル * 20px)に合わせて上限を設定
+  overflow: hidden;
 }
 
 .board-container {
