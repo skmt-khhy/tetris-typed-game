@@ -11,11 +11,7 @@
     </div>
 
     <div class="board-container">
-      <div class="game-board" *ngIf="gameService.board$ | async as board">
-        <div *ngFor="let row of board" class="row">
-          <div *ngFor="let cell of row" class="cell piece-{{ cell }}"></div>
-        </div>
-      </div>
+      <canvas #gameCanvas></canvas>
       <div class="game-over-overlay" *ngIf="gameService.isGameOver$ | async">
         <div class="game-over-message">
           <h2>GAME OVER</h2>

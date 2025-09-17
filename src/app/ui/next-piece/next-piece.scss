@@ -52,7 +52,7 @@ h4 {
 
 .next-piece-board {
   display: grid;
-  --cell-size: 2.8vmin;
+  --cell-size: 12px; // ★ 固定サイズに変更
   grid-template-columns: repeat(4, var(--cell-size));
 }
 
