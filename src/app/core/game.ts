@@ -8,7 +8,7 @@ export const BOARD_HEIGHT = 20;
 const INITIAL_FALL_SPEED = 1000;
 const MIN_FALL_SPEED = 100;
 const SPEED_INCREMENT = 50;
-const HOLD_DELAY = 400;
+const HOLD_DELAY = 500;
 const REPEAT_INTERVAL = 150;
 // ★ ゴーストピース用の定数を追加
 const GHOST_PIECE_STATE = 9;
