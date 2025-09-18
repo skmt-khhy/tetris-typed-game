@@ -8,8 +8,8 @@ export const BOARD_HEIGHT = 20;
 const INITIAL_FALL_SPEED = 1000;
 const MIN_FALL_SPEED = 100;
 const SPEED_INCREMENT = 50;
-const HOLD_DELAY = 350; // ★ 300 から 350 に変更。これが最終調整です。
-const REPEAT_INTERVAL = 120; // ★ 連続移動の速度 (ミリ秒)
+const HOLD_DELAY = 400;
+const REPEAT_INTERVAL = 150;
 // ★ ゴーストピース用の定数を追加
 const GHOST_PIECE_STATE = 9;
 
@@ -61,7 +61,16 @@ export class GameService {
 
   // ★★★ ここまで ★★★
 
-  constructor() { }
+  constructor() {
+    // ★ SEの音量を50%に設定
+    this.clearSound.volume = 0.1;
+
+    // BGMが終了したら、再度再生を開始するように設定（ループ再生）
+    this.bgm.addEventListener('ended', () => {
+      this.bgm.currentTime = 0;
+      this.bgm.play();
+    });
+  }
 
   start() {
     if (this.gameInterval) clearInterval(this.gameInterval);
