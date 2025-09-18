@@ -47,7 +47,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy { //
     '#e74c3c', // 7: Z
     // 8番目はアニメーションで使ったので空けておく
     '#ffffff', // 8: (未使用)
-    'rgba(255, 255, 255, 0.3)', // 9: Ghost Piece
+    'rgba(255, 255, 255, 0.15)', // 9: Ghost Piece
   ];
 
   constructor(public gameService: GameService) { }

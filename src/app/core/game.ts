@@ -53,11 +53,23 @@ export class GameService {
   // ★ ゴーストピースの情報を保持するプロパティを追加
   private ghostPiece!: Piece;
 
+  // ★★★ ここからが変更点 ★★★
+
+  // BGM用のAudioオブジェクトをプロパティとして追加
+  private bgm = new Audio('assets/tetris-theme-korobeiniki-arranged-for-piano.mp3');
+  private isMuted = false; // ミュート状態を管理するフラグ（将来的なミュート機能用）
+
+  // ★★★ ここまで ★★★
+
   constructor() { }
 
   start() {
     if (this.gameInterval) clearInterval(this.gameInterval);
     this.stopContinuousMove();
+
+    // ★ ゲーム開始時にBGMを再生
+    this.playBgm();
+
     this.board = this.createEmptyBoard();
     this.score$.next(0);
     this.isGameOver$.next(false);
@@ -230,6 +242,8 @@ export class GameService {
       this.isGameOver$.next(true);
       clearInterval(this.gameInterval);
       clearInterval(this.timeInterval); // ★ ゲームオーバー時に時間タイマーも停止
+      // ★ ゲームオーバー時にBGMを停止
+      this.stopBgm();
     }
     // ★ ゴーストピースの位置を計算
     this.updateGhostPiece();
@@ -250,6 +264,49 @@ export class GameService {
     // ★ 次のピースを生成する処理をここに戻す
     this.spawnPiece();
   }
+
+  // ★★★ ここから下の新しいメソッドをクラスの末尾に追加 ★★★
+
+  /**
+   * BGMを再生する
+   */
+  private playBgm(): void {
+    if (!this.isMuted) {
+      // play()はPromiseを返すため、ユーザー操作起因でない再生エラーをキャッチする
+      this.bgm.play().catch(error => {
+        console.warn('BGMの自動再生がブラウザにブロックされました。', error);
+        // ユーザーが一度画面をクリック/タップしたら再生を試みるリスナーを追加
+        const playOnFirstInteraction = () => {
+          this.bgm.play();
+          window.removeEventListener('click', playOnFirstInteraction);
+          window.removeEventListener('keydown', playOnFirstInteraction);
+        };
+        window.addEventListener('click', playOnFirstInteraction);
+        window.addEventListener('keydown', playOnFirstInteraction);
+      });
+    }
+  }
+
+  /**
+   * BGMを停止する
+   */
+  private stopBgm(): void {
+    this.bgm.pause();
+    this.bgm.currentTime = 0; // 曲を最初に戻す
+  }
+
+  /**
+   * BGMのミュートを切り替える（将来のボタン実装用）
+   */
+  public toggleMute(): void {
+    this.isMuted = !this.isMuted;
+    if (this.isMuted) {
+      this.stopBgm();
+    } else {
+      this.playBgm();
+    }
+  }
+  // ★★★ ここまで ★★★
 
   private clearLines() {
     let linesCleared = 0;
